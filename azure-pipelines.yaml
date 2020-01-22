@@ -1,0 +1,19 @@
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: VSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    platform: 'Any CPU'
+    configuration: 'Release'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifact: 32-bit
+    path: ZpaPlugin/bin/Release/x86
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifact: 64-bit
+    path: ZpaPlugin/bin/Release/x64

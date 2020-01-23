@@ -1,19 +1,82 @@
 pool:
   vmImage: 'windows-latest'
 
-steps:
+steps:    
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '**/*.sln'
+    
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
     platform: 'Any CPU'
     configuration: 'Release'
+    
 
+# Get latest version of zpa-cli
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'specific'
+    project: 'z-plsql-analyzer'
+    pipeline: 'zpa-cli'
+    downloadType: 'single'
+    artifactName: 'zpa-cli'
+    
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '$(System.ArtifactsDirectory)/*.zip' 
+    destinationFolder: extracted
+
+# Publish 32-bit artifacts
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/x86/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x86'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/Newtonsoft.Json.dll'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x86/ZPA'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)/extracted'
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x86/ZPA'
+      
 - task: PublishPipelineArtifact@1
   inputs:
     artifact: 32-bit
-    path: ZpaPlugin/bin/Release/x86
+    path: '$(Build.ArtifactStagingDirectory)/x86'
+
+# Publish 64-bit artifacts
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/x64/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x64'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/Newtonsoft.Json.dll'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x64/ZPA'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)/extracted'
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/x64/ZPA'
 
 - task: PublishPipelineArtifact@1
   inputs:
     artifact: 64-bit
-    path: ZpaPlugin/bin/Release/x64
+    path: '$(Build.ArtifactStagingDirectory)/x64'

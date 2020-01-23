@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
+using ZpaPlugin.Models;
 
 namespace ZpaPlugin
 {
@@ -35,9 +35,10 @@ namespace ZpaPlugin
                 File.Delete(path);
             }
 
-            var obj = JObject.Parse(File.ReadAllText(output));
-            JArray issues = (JArray)obj["issues"];
-            MessageBox.Show($"Found {issues.Count} issues.", "Result", MessageBoxButton.OK, MessageBoxImage.Information);
+            var json = File.ReadAllText(output);
+            var issueData = JsonConvert.DeserializeObject<GenericIssueData>(json);
+
+            new ResultWindow(issueData.Issues).Show();
         }
     }
 }

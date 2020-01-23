@@ -20,14 +20,19 @@ namespace ZpaPlugin
         private static ZpaPlugin self;
         private static IdeGetText getTextCallback;
 
+        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int _fpreset();
+
         private ZpaPlugin()
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
+            _fpreset(); // Fixes "ArithmeticException: Overflow or underflow in the arithmetic operation." when loading the WPF form
         }
 
         private Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
             var assemblyName = new AssemblyName(args.Name).Name;
+            if (assemblyName.EndsWith(".resources")) return null;
             return Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(dependenciesPath, $"{assemblyName}.dll")));
         }
 

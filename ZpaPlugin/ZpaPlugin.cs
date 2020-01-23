@@ -1,23 +1,34 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace ZpaPlugin
 {
+    delegate string IdeGetText();
+
     public class ZpaPlugin
     {
+        public static readonly string dependenciesPath = Path.Combine(Path.GetDirectoryName(typeof(ZpaPlugin).Assembly.Location), "ZPA");
+
         private const string PLUGIN_NAME = "Z PL/SQL Analyzer";
 
         private const int PLUGIN_MENU_INDEX = 1;
 
+        private const int GET_TEXT_CALLBACK = 30;
+
         private static ZpaPlugin self;
-        private int pluginId;
+        private static IdeGetText getTextCallback;
 
-        //TODO: declare private delegate variable (not necessarilly static), for instance
-        //private static IdeCreateWindow createWindowCallback;
-
-        private ZpaPlugin(int id)
+        private ZpaPlugin()
         {
-            pluginId = id;
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
+        }
+
+        private Assembly ResolveAssembly(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name).Name;
+            return Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(dependenciesPath, $"{assemblyName}.dll")));
         }
 
         [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]
@@ -25,7 +36,7 @@ namespace ZpaPlugin
         {
             if (self == null)
             {
-                self = new ZpaPlugin(id);
+                self = new ZpaPlugin();
             }
             return PLUGIN_NAME;
         }
@@ -33,8 +44,12 @@ namespace ZpaPlugin
         [DllExport("RegisterCallback", CallingConvention = CallingConvention.Cdecl)]
         public static void RegisterCallback(int index, IntPtr function)
         {
-            //TODO: register pointers to PL/SQL Developer callbacks you need, for instance
-            //createWindowCallback = (IdeCreateWindow)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeCreateWindow));
+            switch (index)
+            {
+                case GET_TEXT_CALLBACK:
+                    getTextCallback = (IdeGetText)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeGetText));
+                    break;
+            }
         }
 
         [DllExport("CreateMenuItem", CallingConvention = CallingConvention.Cdecl)]
@@ -55,7 +70,8 @@ namespace ZpaPlugin
         {
             if (index == PLUGIN_MENU_INDEX)
             {
-                //TODO: do something when plug-in's menu is clicked.
+                var runner = new ZpaRunner();
+                runner.Analyze(getTextCallback());
             }
         }
 

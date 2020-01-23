@@ -1,0 +1,29 @@
+parameters:
+  platform: ''
+  name: ''
+
+steps:
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/${{ parameters.platform }}/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: 'ZpaPlugin/bin/Release/Newtonsoft.Json.dll'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}/ZPA'
+    flattenFolders: true
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)/extracted'
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}/ZPA'
+      
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifact: ${{ parameters.name }}
+    path: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}'

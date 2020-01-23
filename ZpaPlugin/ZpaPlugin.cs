@@ -47,7 +47,9 @@ namespace ZpaPlugin
             switch (index)
             {
                 case GET_TEXT_CALLBACK:
-                    getTextCallback = (IdeGetText)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeGetText));
+                    getTextCallback = Marshal.GetDelegateForFunctionPointer<IdeGetText>(function);
+                    break;
+                default:
                     break;
             }
         }
@@ -59,10 +61,7 @@ namespace ZpaPlugin
             {
                 return "Tools / Analyze with ZPA";
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
 
         [DllExport("OnMenuClick", CallingConvention = CallingConvention.Cdecl)]

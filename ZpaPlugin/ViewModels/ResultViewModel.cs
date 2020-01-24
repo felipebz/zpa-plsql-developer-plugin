@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -37,6 +38,7 @@ namespace ZpaPlugin.ViewModels
                 SetProperty(ref issues, value, nameof(Issues));
 
                 issueView = (ListCollectionView)CollectionViewSource.GetDefaultView(issues);
+                issueView.CurrentChanged += CurrentIssueChanged;
                 issueView.CustomSort = new CustomSorter();
                 issueView.MoveCurrentToFirst();
                 OnPropertyChanged(nameof(IssueView));
@@ -44,6 +46,12 @@ namespace ZpaPlugin.ViewModels
             }
         }
 
+        private void CurrentIssueChanged(object sender, EventArgs e)
+        {
+            var view = (ListCollectionView)sender;
+            var issue = view.CurrentItem as Issue;
+            ZpaPlugin.SetError(issue.PrimaryLocation.TextRange.StartLine, issue.PrimaryLocation.TextRange.StartColumn);
+        }
     }
 
     internal class CustomSorter : IComparer

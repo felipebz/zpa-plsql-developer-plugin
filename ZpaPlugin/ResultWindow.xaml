@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ZpaPlugin"
         xmlns:vm="clr-namespace:ZpaPlugin.ViewModels"
         mc:Ignorable="d"
-        Title="Issues found" Height="500" Width="340">
+        Title="Issues found" Height="500" Width="340" Topmost="True">
     <Window.DataContext>
         <vm:ResultViewModel />
     </Window.DataContext>

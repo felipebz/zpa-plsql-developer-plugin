@@ -7,6 +7,9 @@ namespace ZpaPlugin
 {
     delegate string IdeGetText();
 
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public delegate bool IdeSetError(int line, int column);
+
     public class ZpaPlugin
     {
         public static readonly string dependenciesPath = Path.Combine(Path.GetDirectoryName(typeof(ZpaPlugin).Assembly.Location), "ZPA");
@@ -16,9 +19,11 @@ namespace ZpaPlugin
         private const int PLUGIN_MENU_INDEX = 1;
 
         private const int GET_TEXT_CALLBACK = 30;
+        private const int SET_ERROR_CALLBACK = 36;
 
         private static ZpaPlugin self;
         private static IdeGetText getTextCallback;
+        private static IdeSetError setErrorCallback;
 
         [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int _fpreset();
@@ -54,6 +59,9 @@ namespace ZpaPlugin
                 case GET_TEXT_CALLBACK:
                     getTextCallback = Marshal.GetDelegateForFunctionPointer<IdeGetText>(function);
                     break;
+                case SET_ERROR_CALLBACK:
+                    setErrorCallback = Marshal.GetDelegateForFunctionPointer<IdeSetError>(function);
+                    break;
                 default:
                     break;
             }
@@ -81,5 +89,10 @@ namespace ZpaPlugin
 
         [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
         public static string About() =>  "Z PL/SQL Analyzer";
+
+        public static bool SetError(int line, int? column)
+        {
+            return setErrorCallback(line, (column ?? 0) + 1);
+        }
     }
 }

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ZpaPlugin.Models;
+using ZpaPlugin.ViewModels;
 
 namespace ZpaPlugin
 {
@@ -20,17 +11,17 @@ namespace ZpaPlugin
     /// </summary>
     public partial class ResultWindow : Window
     {
-        private List<Issue> issues;
+        private readonly ResultViewModel vm;
 
         public ResultWindow()
         {
             InitializeComponent();
+            vm = (ResultViewModel)DataContext;
         }
 
         public ResultWindow(List<Issue> issues) : this()
         {
-            this.issues = issues;
-            label.Content = $"Found {issues.Count} issues.";
+            vm.Issues = new ObservableCollection<Issue>(issues);
         }
     }
 }

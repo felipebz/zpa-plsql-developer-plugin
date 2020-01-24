@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZpaPlugin.Models
 {
@@ -17,5 +13,26 @@ namespace ZpaPlugin.Models
     {
         [JsonProperty("severity")]
         public string Severity { get; set; }
+
+        [JsonProperty("primaryLocation")]
+        public PrimaryLocation PrimaryLocation { get; set; }
+    }
+
+    public class PrimaryLocation
+    {
+        [JsonProperty("message")]
+        public string Message { get; set; }
+
+        [JsonProperty("textRange")]
+        public TextRange TextRange { get; set; }
+    }
+
+    public class TextRange
+    {
+        [JsonProperty("startLine")]
+        public int StartLine { get; set; }
+
+        [JsonProperty("startColumn")]
+        public int? StartColumn { get; set; }
     }
 }

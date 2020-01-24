@@ -16,12 +16,20 @@ namespace ZpaPlugin
         public ResultWindow()
         {
             InitializeComponent();
+
+            Closed += ResultWindow_Closed;
+
             vm = (ResultViewModel)DataContext;
         }
 
         public ResultWindow(List<Issue> issues) : this()
         {
             vm.Issues = new ObservableCollection<Issue>(issues);
+        }
+
+        private void ResultWindow_Closed(object sender, System.EventArgs e)
+        {
+            ZpaPlugin.ClearError();
         }
     }
 }

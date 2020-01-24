@@ -8,7 +8,9 @@ namespace ZpaPlugin
     delegate string IdeGetText();
 
     [return: MarshalAs(UnmanagedType.Bool)]
-    public delegate bool IdeSetError(int line, int column);
+    delegate bool IdeSetError(int line, int column);
+
+    delegate void IdeClearError();
 
     public class ZpaPlugin
     {
@@ -20,10 +22,12 @@ namespace ZpaPlugin
 
         private const int GET_TEXT_CALLBACK = 30;
         private const int SET_ERROR_CALLBACK = 36;
+        private const int CLEAR_ERROR_CALLBACK = 37;
 
         private static ZpaPlugin self;
         private static IdeGetText getTextCallback;
         private static IdeSetError setErrorCallback;
+        private static IdeClearError clearErrorCallback;
 
         [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int _fpreset();
@@ -62,6 +66,9 @@ namespace ZpaPlugin
                 case SET_ERROR_CALLBACK:
                     setErrorCallback = Marshal.GetDelegateForFunctionPointer<IdeSetError>(function);
                     break;
+                case CLEAR_ERROR_CALLBACK:
+                    clearErrorCallback = Marshal.GetDelegateForFunctionPointer<IdeClearError>(function);
+                    break;
                 default:
                     break;
             }
@@ -93,6 +100,10 @@ namespace ZpaPlugin
         public static bool SetError(int line, int? column)
         {
             return setErrorCallback(line, (column ?? 0) + 1);
+        }
+        public static void ClearError()
+        {
+            clearErrorCallback();
         }
     }
 }

@@ -97,9 +97,9 @@ namespace ZpaPlugin
         [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
         public static string About() =>  "Z PL/SQL Analyzer";
 
-        public static bool SetError(int line, int? column)
+        public static bool SetError(int line, int column)
         {
-            return setErrorCallback(line, (column ?? 0) + 1);
+            return setErrorCallback?.Invoke(line, column + 1) ?? false;
         }
         public static void ClearError()
         {

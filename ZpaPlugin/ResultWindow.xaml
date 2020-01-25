@@ -24,9 +24,9 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding PrimaryLocation.TextRange.StartLine}" TextWrapping="Wrap" FontSize="11" Foreground="#555" />
+                                <TextBlock Text="{Binding StartLine, StringFormat=Line {0}}" TextWrapping="Wrap" FontSize="11" Foreground="#555" />
 
-                                <TextBlock Grid.Row="1" Text="{Binding PrimaryLocation.Message}" Margin="0,5,0,0" TextWrapping="Wrap" FontWeight="Bold" />
+                                <TextBlock Grid.Row="1" Text="{Binding Message}" Margin="0,5,0,0" TextWrapping="Wrap" FontWeight="Bold" />
 
                                 <Grid Grid.Row="2" Margin="0,5,0,0">
                                     <Grid.ColumnDefinitions>
@@ -60,7 +60,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListView">
-                                        <TextBlock Text="Nenhum problema foi encontrado com os filtros selecionados." TextWrapping="Wrap"
+                                        <TextBlock Text="No problems were found with the selected filters." TextWrapping="Wrap"
                                                        Margin="15" TextAlignment="Center" />
                                     </ControlTemplate>
                                 </Setter.Value>

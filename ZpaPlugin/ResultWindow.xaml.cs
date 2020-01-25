@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using ZpaPlugin.Models;
 using ZpaPlugin.ViewModels;
@@ -24,7 +25,7 @@ namespace ZpaPlugin
 
         public ResultWindow(List<Issue> issues) : this()
         {
-            vm.Issues = new ObservableCollection<Issue>(issues);
+            vm.Issues = new ObservableCollection<IssueView>(issues.Select(x => new IssueView(x)));
         }
 
         private void ResultWindow_Closed(object sender, System.EventArgs e)

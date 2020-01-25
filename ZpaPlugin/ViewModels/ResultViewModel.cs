@@ -12,15 +12,15 @@ namespace ZpaPlugin.ViewModels
     public class ResultViewModel : BindableBase
     {
         private ListCollectionView issueView;
-        private ObservableCollection<Issue> issues;
+        private ObservableCollection<IssueView> issues;
 
         public ResultViewModel()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                Issues = new ObservableCollection<Issue>
+                Issues = new ObservableCollection<IssueView>
                 {
-                    new Issue { Severity = "MAJOR", PrimaryLocation = new PrimaryLocation { Message = "Example of message", TextRange = new TextRange { StartLine = 10 } } }
+                    new IssueView { Severity = "MAJOR", Message = "Example of message", StartLine = 10 }
                 };
             }
         }
@@ -30,7 +30,7 @@ namespace ZpaPlugin.ViewModels
             get { return issueView; }
         }
 
-        public ObservableCollection<Issue> Issues
+        public ObservableCollection<IssueView> Issues
         {
             get { return issues; }
             set
@@ -49,8 +49,8 @@ namespace ZpaPlugin.ViewModels
         private void CurrentIssueChanged(object sender, EventArgs e)
         {
             var view = (ListCollectionView)sender;
-            var issue = view.CurrentItem as Issue;
-            ZpaPlugin.SetError(issue.PrimaryLocation.TextRange.StartLine, issue.PrimaryLocation.TextRange.StartColumn);
+            var issue = view.CurrentItem as IssueView;
+            ZpaPlugin.SetError(issue.StartLine, issue.StartColumn);
         }
     }
 
@@ -58,10 +58,28 @@ namespace ZpaPlugin.ViewModels
     {
         public int Compare(object x, object y)
         {
-            var issue1 = (Issue)x;
-            var issue2 = (Issue)y;
+            var issue1 = (IssueView)x;
+            var issue2 = (IssueView)y;
 
-            return issue1.PrimaryLocation.TextRange.StartLine.CompareTo(issue2.PrimaryLocation.TextRange.StartLine);
+            return issue1.StartLine.CompareTo(issue2.StartLine);
         }
+    }
+
+    public class IssueView
+    {
+        internal IssueView() { }
+
+        public IssueView(Issue issue)
+        {
+            Severity = issue.Severity;
+            Message = issue.PrimaryLocation.Message;
+            StartLine = issue.PrimaryLocation.TextRange.StartLine;
+            StartColumn = issue.PrimaryLocation.TextRange.StartColumn ?? 0;
+        }
+
+        public string Severity { get; internal set; }
+        public string Message { get; internal set; }
+        public int StartLine { get; internal set; }
+        public int StartColumn { get; internal set; }
     }
 }

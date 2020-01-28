@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:ZpaPlugin.ViewModels"
         mc:Ignorable="d"
         UseLayoutRounding="True"
-        Title="Issues found" Height="500" Width="340" Topmost="True">
+        Title="{Binding Issues.Count, StringFormat=Found {0} issue(s)}" Height="500" Width="340" Topmost="True">
     <Window.DataContext>
         <vm:ResultViewModel />
     </Window.DataContext>

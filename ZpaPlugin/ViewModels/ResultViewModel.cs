@@ -20,7 +20,11 @@ namespace ZpaPlugin.ViewModels
             {
                 Issues = new ObservableCollection<IssueView>
                 {
-                    new IssueView { Severity = "MAJOR", Message = "Example of message", StartLine = 10 }
+                    new IssueView { Severity = "INFO", Message = "Example of message", StartLine = 10 },
+                    new IssueView { Severity = "MINOR", Message = "Example of message", StartLine = 10 },
+                    new IssueView { Severity = "MAJOR", Message = "Example of message", StartLine = 10 },
+                    new IssueView { Severity = "CRITICAL", Message = "Example of message", StartLine = 10 },
+                    new IssueView { Severity = "BLOCKER", Message = "Example of message", StartLine = 10 }
                 };
             }
         }

@@ -11,6 +11,9 @@ namespace ZpaPlugin.Models
 
     public class Issue
     {
+        [JsonProperty("ruleId")]
+        public string RuleId { get; set; }
+
         [JsonProperty("severity")]
         public string Severity { get; set; }
 

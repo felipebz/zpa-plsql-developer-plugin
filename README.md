@@ -12,7 +12,7 @@ Note that this is work in progress and it has a lot of rough edges.
 
 ![Artifact download menu with the options 32-bit and 64-bit](docs/artifacts.png)
 
-* Extract the file to <PLSQL Developer folder>\PlugIns.
+* Extract the file to `<PLSQL Developer folder>\PlugIns`.
 
 * Run PL/SQL Developer and confirm that the plugin was recognized (menu Tools > Configure Plug-Ins).
 

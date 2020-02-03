@@ -37,6 +37,8 @@ namespace ZpaPlugin.ViewModels
             ClearFilters = new RelayCommand(OnClearFilters);
         }
 
+        public IPlsqlDevApi PlsqlDevApi { get; set; } = new NullPlsqlDevApi();
+
         public RelayCommand ClearFilters { get; set; }
 
         public ICollectionView IssueView
@@ -131,11 +133,11 @@ namespace ZpaPlugin.ViewModels
             var issue = view.CurrentItem as IssueView;
             if (issue == null)
             {
-                ZpaPlugin.ClearError();
+                PlsqlDevApi.ClearError();
             }
             else
             {
-                ZpaPlugin.SetError(issue.StartLine, issue.StartColumn);
+                PlsqlDevApi.SetError(issue.StartLine, issue.StartColumn);
             }
         }
 

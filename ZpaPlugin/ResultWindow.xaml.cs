@@ -23,14 +23,15 @@ namespace ZpaPlugin
             vm = (ResultViewModel)DataContext;
         }
 
-        public ResultWindow(List<Issue> issues) : this()
+        public ResultWindow(IPlsqlDevApi plsqlDevApi, List<Issue> issues) : this()
         {
             vm.Issues = new ObservableCollection<IssueView>(issues.Select(x => new IssueView(x)));
+            vm.PlsqlDevApi = plsqlDevApi;
         }
 
         private void ResultWindow_Closed(object sender, System.EventArgs e)
         {
-            ZpaPlugin.ClearError();
+            vm.PlsqlDevApi.ClearError();
         }
     }
 }

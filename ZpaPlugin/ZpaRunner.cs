@@ -8,6 +8,12 @@ namespace ZpaPlugin
     class ZpaRunner
     {
         private static readonly string zpaCli = Path.Combine(ZpaPlugin.dependenciesPath, "zpa-cli", "bin", "zpa-cli.bat");
+        private readonly IPlsqlDevApi plsqlDevApi;
+
+        public ZpaRunner(IPlsqlDevApi plsqlDevApi)
+        {
+            this.plsqlDevApi = plsqlDevApi;
+        }
 
         public void Analyze(string contents)
         {
@@ -38,7 +44,7 @@ namespace ZpaPlugin
             var json = File.ReadAllText(output);
             var issueData = JsonConvert.DeserializeObject<GenericIssueData>(json);
 
-            new ResultWindow(issueData.Issues).Show();
+            new ResultWindow(plsqlDevApi, issueData.Issues).Show();
         }
     }
 }

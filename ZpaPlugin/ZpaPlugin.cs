@@ -12,7 +12,7 @@ namespace ZpaPlugin
 
     delegate void IdeClearError();
 
-    public class ZpaPlugin
+    public class ZpaPlugin : IPlsqlDevApi
     {
         public static readonly string dependenciesPath = Path.Combine(Path.GetDirectoryName(typeof(ZpaPlugin).Assembly.Location), "ZPA");
 
@@ -89,7 +89,7 @@ namespace ZpaPlugin
         {
             if (index == PLUGIN_MENU_INDEX)
             {
-                var runner = new ZpaRunner();
+                var runner = new ZpaRunner(self);
                 runner.Analyze(getTextCallback());
             }
         }
@@ -97,11 +97,11 @@ namespace ZpaPlugin
         [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
         public static string About() =>  "Z PL/SQL Analyzer";
 
-        public static bool SetError(int line, int column)
+        public bool SetError(int line, int column)
         {
             return setErrorCallback?.Invoke(line, column + 1) ?? false;
         }
-        public static void ClearError()
+        public void ClearError()
         {
             clearErrorCallback();
         }

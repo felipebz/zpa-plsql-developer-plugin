@@ -5,7 +5,7 @@ using ZpaPlugin.Models;
 
 namespace ZpaPlugin
 {
-    class ZpaRunner
+    public class ZpaRunner
     {
         private static readonly string zpaCli = Path.Combine(ZpaPlugin.dependenciesPath, "zpa-cli", "bin", "zpa-cli.bat");
         private readonly IPlsqlDevApi plsqlDevApi;

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace ZpaPlugin
 {
-    delegate string IdeGetText();
+    delegate IntPtr IdeGetText();
 
     [return: MarshalAs(UnmanagedType.Bool)]
     delegate bool IdeSetError(int line, int column);
@@ -90,7 +90,8 @@ namespace ZpaPlugin
             if (index == PLUGIN_MENU_INDEX)
             {
                 var runner = new ZpaRunner(self);
-                runner.Analyze(getTextCallback());
+                var contents = Marshal.PtrToStringAnsi(getTextCallback());
+                runner.Analyze(contents);
             }
         }
 

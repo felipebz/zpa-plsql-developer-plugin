@@ -29,7 +29,7 @@ namespace ZpaPlugin
                 var processInfo = new ProcessStartInfo()
                 {
                     FileName = zpaCli,
-                    Arguments = $"--sources \"{tempDir}\" --output \"{output}\"",
+                    Arguments = $"--sources \"{tempDir}\" --output-file \"{output}\" --output-format sq-generic-issue-import",
                     CreateNoWindow = true,
                     UseShellExecute = false
 

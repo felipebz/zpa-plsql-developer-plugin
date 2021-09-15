@@ -1,14 +1,19 @@
 # Z PL/SQL Analyzer for PL/SQL Developer
 
-[![Build Status](https://dev.azure.com/felipebz/z-plsql-analyzer/_apis/build/status/zpa-plsql-developer-plugin?branchName=master)](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=master)
+[![Build Status](https://dev.azure.com/felipebz/z-plsql-analyzer/_apis/build/status/zpa-plsql-developer-plugin?branchName=main)](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=main)
 
 The [Z PL/SQL Analyzer](https://github.com/felipebz/zpa) (or simply ZPA) is a code analyzer for PL/SQL and Oracle SQL code. This repository contains the ZPA plugin for [Allround Automations PL/SQL Developer](https://www.allroundautomations.com/products/pl-sql-developer/).
+
+## Requisites
+
+- .NET Framework 4.6
+- Java 11
 
 ## Installation
 
 Note that this is work in progress and it has a lot of rough edges.
 
-* Open the [build pipeline](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=master) and download the plugin from the "Artifacts" button. You must the download the artifact corresponding to your PL/SQL Developer installation.
+* Open the [build pipeline](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=main) and download the plugin from the "Artifacts" button. You must the download the artifact corresponding to your PL/SQL Developer installation.
 
 ![Artifact download menu with the options 32-bit and 64-bit](docs/artifacts.png)
 

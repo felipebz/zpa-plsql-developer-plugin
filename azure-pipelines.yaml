@@ -8,6 +8,8 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
     
+- script: DllExport -action Restore
+
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
@@ -23,10 +25,11 @@ steps:
     pipeline: 'zpa-cli'
     downloadType: 'single'
     artifactName: 'zpa-cli'
+    itemPattern: 'zpa-cli/zpa-cli-shadow-*.zip'
     
 - task: ExtractFiles@1
   inputs:
-    archiveFilePatterns: '$(System.ArtifactsDirectory)/*.zip' 
+    archiveFilePatterns: '$(System.ArtifactsDirectory)/**/*.zip' 
     destinationFolder: extracted
 
 - template: package-and-publish.yaml

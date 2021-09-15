@@ -6,14 +6,14 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(system.defaultworkingdirectory)'
-    contents: 'ZpaPlugin/bin/Release/${{ parameters.platform }}/**'
+    contents: 'ZpaPlugin/bin/Release/net4.6/${{ parameters.platform }}/**'
     targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}'
     flattenFolders: true
     
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(system.defaultworkingdirectory)'
-    contents: 'ZpaPlugin/bin/Release/Newtonsoft.Json.dll'
+    contents: 'ZpaPlugin/bin/Release/net4.6/Newtonsoft.Json.dll'
     targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.platform }}/ZPA'
     flattenFolders: true
     

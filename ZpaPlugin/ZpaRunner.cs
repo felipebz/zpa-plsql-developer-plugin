@@ -1,18 +1,21 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using ZpaPlugin.Models;
 
 namespace ZpaPlugin
 {
     public class ZpaRunner
     {
-        private static readonly string zpaCli = Path.Combine(ZpaPlugin.dependenciesPath, "zpa-cli", "bin", "zpa-cli.bat");
+        private string zpaCli;
         private readonly IPlsqlDevApi plsqlDevApi;
 
         public ZpaRunner(IPlsqlDevApi plsqlDevApi)
         {
             this.plsqlDevApi = plsqlDevApi;
+            var zpaCliFolder = Directory.GetDirectories(ZpaPlugin.dependenciesPath).Where(x => Path.GetFileName(x).StartsWith("zpa-cli")).OrderByDescending(x => x).First();
+            zpaCli = Path.Combine(ZpaPlugin.dependenciesPath, zpaCliFolder, "bin", "zpa-cli.bat");
         }
 
         public void Analyze(string contents)

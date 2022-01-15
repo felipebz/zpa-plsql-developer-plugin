@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
 using ZpaPlugin.Models;
 
 namespace ZpaPlugin
@@ -20,6 +23,47 @@ namespace ZpaPlugin
 
         public void Analyze(string contents)
         {
+            var version = 0;
+            var fullVersion = "not found";
+
+            var javaExe = "java.exe";
+            var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME").Trim('"');
+            if (javaHome != null)
+            {
+                javaExe = Path.Combine(javaHome, "bin", javaExe);
+            }
+
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = javaExe,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardError = true,
+
+                    Arguments = "-version"
+                };
+                var p = Process.Start(psi);
+                string strOutput = p.StandardError.ReadToEnd();
+                p.WaitForExit();
+
+                var exp = new Regex(@"\(build ((\d+)\..*)\)");
+                var match = exp.Match(strOutput);
+                version = Convert.ToInt32(match.Groups[2].Value);
+                fullVersion = match.Groups[1].Value;
+            }
+            catch 
+            { 
+                // ignored
+            }
+
+            if (version < 11)
+            {
+                MessageBox.Show($"The ZPA plugin requires Java 11 or newer to run. You are currently using Java {fullVersion} from {javaExe}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var tempDir = Path.Combine(Path.GetTempPath(), "zpa-plsql-developer");
             Directory.CreateDirectory(tempDir);
 

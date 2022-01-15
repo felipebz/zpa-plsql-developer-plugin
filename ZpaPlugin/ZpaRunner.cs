@@ -27,10 +27,10 @@ namespace ZpaPlugin
             var fullVersion = "not found";
 
             var javaExe = "java.exe";
-            var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME").Trim('"');
+            var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
             if (javaHome != null)
             {
-                javaExe = Path.Combine(javaHome, "bin", javaExe);
+                javaExe = Path.Combine(javaHome.Trim('"'), "bin", javaExe);
             }
 
             try

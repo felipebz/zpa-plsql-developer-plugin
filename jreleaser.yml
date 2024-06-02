@@ -1,0 +1,35 @@
+project:
+  name: zpa-plsql-developer-plugin
+  version: 1.0.0-SNAPSHOT
+  description: ZPA for PL/SQL Developer
+  longDescription: ZPA for PL/SQL Developer
+  authors:
+    - Felipe Zorzo
+  license: LGPL-3.0
+  links:
+    homepage: https://github.com/felipebz/zpa-plsql-developer-plugin
+  inceptionYear: "2020"
+
+release:
+  github:
+    overwrite: true
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        enabled: false
+      hide:
+        uncategorized: true
+
+assemble:
+  archive:
+    plugin:
+      active: ALWAYS
+      attachPlatform: true
+      formats: [ ZIP ]
+      fileSets:
+        - input: 'ZpaPlugin\bin\Release\net8.0-windows\win-x64'
+          includes: [ 'ZpaPlugin.dll' ]
+        - input: 'ZpaPlugin.Gui/bin/Release/net8.0-windows/win-x64/publish'
+          includes: [ '*.exe', '*.dll', '*.config' ]
+          output: 'ZPA'

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZpaPlugin", "ZpaPlugin\ZpaP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZpaPluginTester", "ZpaPluginTester\ZpaPluginTester.csproj", "{91E5B502-1186-4AA8-83AF-89527E459D31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZpaPlugin.Gui", "ZpaPlugin.Gui\ZpaPlugin.Gui.csproj", "{108E8D2B-0DBB-4805-BFF7-5B02DA208566}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{91E5B502-1186-4AA8-83AF-89527E459D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E5B502-1186-4AA8-83AF-89527E459D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E5B502-1186-4AA8-83AF-89527E459D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108E8D2B-0DBB-4805-BFF7-5B02DA208566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108E8D2B-0DBB-4805-BFF7-5B02DA208566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108E8D2B-0DBB-4805-BFF7-5B02DA208566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108E8D2B-0DBB-4805-BFF7-5B02DA208566}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

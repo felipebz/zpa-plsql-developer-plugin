@@ -1,25 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
-using ZpaPlugin.Models;
 
 namespace ZpaPlugin
 {
     public class ZpaRunner
     {
         private string zpaCli;
-        private readonly IPlsqlDevApi plsqlDevApi;
+        /*private readonly IPlsqlDevApi plsqlDevApi;
 
         public ZpaRunner(IPlsqlDevApi plsqlDevApi)
         {
             this.plsqlDevApi = plsqlDevApi;
             var zpaCliFolder = Directory.GetDirectories(ZpaPlugin.dependenciesPath).Where(x => Path.GetFileName(x).StartsWith("zpa-cli")).OrderByDescending(x => x).First();
             zpaCli = Path.Combine(ZpaPlugin.dependenciesPath, zpaCliFolder, "bin", "zpa-cli.bat");
-        }
+        }*/
 
         public void Analyze(string contents)
         {
@@ -60,7 +56,7 @@ namespace ZpaPlugin
 
             if (version < 11)
             {
-                MessageBox.Show($"The ZPA plugin requires Java 11 or newer to run. You are currently using Java {fullVersion} from {javaExe}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show($"The ZPA plugin requires Java 11 or newer to run. You are currently using Java {fullVersion} from {javaExe}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -89,9 +85,9 @@ namespace ZpaPlugin
             }
 
             var json = File.ReadAllText(output);
-            var issueData = JsonConvert.DeserializeObject<GenericIssueData>(json);
+            //var issueData = JsonConvert.DeserializeObject<GenericIssueData>(json);
 
-            new ResultWindow(plsqlDevApi, issueData.Issues).Show();
+            //new ResultWindow(plsqlDevApi, issueData.Issues).Show();
         }
     }
 }

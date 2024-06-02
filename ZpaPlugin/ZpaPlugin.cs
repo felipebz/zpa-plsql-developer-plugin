@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace ZpaPlugin
@@ -14,7 +15,7 @@ namespace ZpaPlugin
 
     public class ZpaPlugin : IPlsqlDevApi
     {
-        public static readonly string dependenciesPath = Path.Combine(Path.GetDirectoryName(typeof(ZpaPlugin).Assembly.Location), "ZPA");
+        public static readonly string dependenciesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "ZPA");
 
         private const string PLUGIN_NAME = "Z PL/SQL Analyzer";
 
@@ -29,33 +30,15 @@ namespace ZpaPlugin
         private static IdeSetError setErrorCallback;
         private static IdeClearError clearErrorCallback;
 
-        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int _fpreset();
-
-        private ZpaPlugin()
+        [UnmanagedCallersOnly(EntryPoint = "IdentifyPlugIn", CallConvs = [typeof(CallConvCdecl)])]
+        public static IntPtr IdentifyPlugIn(int id)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
-            _fpreset(); // Fixes "ArithmeticException: Overflow or underflow in the arithmetic operation." when loading the WPF form
+            self ??= new ZpaPlugin();
+
+            return Marshal.StringToCoTaskMemAnsi(PLUGIN_NAME);
         }
 
-        private Assembly ResolveAssembly(object sender, ResolveEventArgs args)
-        {
-            var assemblyName = new AssemblyName(args.Name).Name;
-            if (assemblyName.EndsWith(".resources")) return null;
-            return Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(dependenciesPath, $"{assemblyName}.dll")));
-        }
-
-        [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]
-        public static string IdentifyPlugIn(int id)
-        {
-            if (self == null)
-            {
-                self = new ZpaPlugin();
-            }
-            return PLUGIN_NAME;
-        }
-
-        [DllExport("RegisterCallback", CallingConvention = CallingConvention.Cdecl)]
+        [UnmanagedCallersOnly(EntryPoint = "RegisterCallback", CallConvs = [typeof(CallConvCdecl)])]
         public static void RegisterCallback(int index, IntPtr function)
         {
             switch (index)
@@ -69,39 +52,39 @@ namespace ZpaPlugin
                 case CLEAR_ERROR_CALLBACK:
                     clearErrorCallback = Marshal.GetDelegateForFunctionPointer<IdeClearError>(function);
                     break;
-                default:
-                    break;
             }
         }
 
-        [DllExport("CreateMenuItem", CallingConvention = CallingConvention.Cdecl)]
-        public static string CreateMenuItem(int index)
+        [UnmanagedCallersOnly(EntryPoint = "CreateMenuItem", CallConvs = [typeof(CallConvCdecl)])]
+        public static IntPtr CreateMenuItem(int index)
         {
+            var retValue = "";
             if (index == PLUGIN_MENU_INDEX)
             {
-                return "Tools / Analyze with ZPA";
+                retValue = "Tools / Analyze with ZPA";
             }
-            return "";
+
+            return Marshal.StringToCoTaskMemAnsi(retValue);
         }
 
-        [DllExport("OnMenuClick", CallingConvention = CallingConvention.Cdecl)]
+        [UnmanagedCallersOnly(EntryPoint = "OnMenuClick", CallConvs = [typeof(CallConvCdecl)])]
         public static void OnMenuClick(int index)
         {
             if (index == PLUGIN_MENU_INDEX)
             {
-                var runner = new ZpaRunner(self);
-                var contents = Marshal.PtrToStringAnsi(getTextCallback());
-                runner.Analyze(contents);
+                var guiPath = Path.Combine(dependenciesPath, "ZpaPlugin.Gui.exe");
+                Process.Start(guiPath);
             }
         }
 
-        [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
-        public static string About() =>  "Z PL/SQL Analyzer";
+        [UnmanagedCallersOnly(EntryPoint = "About", CallConvs = [typeof(CallConvCdecl)])]
+        public static IntPtr About() => Marshal.StringToCoTaskMemAnsi("Z PL/SQL Analyzer");
 
         public bool SetError(int line, int column)
         {
             return setErrorCallback?.Invoke(line, column + 1) ?? false;
         }
+
         public void ClearError()
         {
             clearErrorCallback();

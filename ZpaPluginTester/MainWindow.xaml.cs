@@ -1,8 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
-using System.IO;
+﻿using System;
 using System.Windows;
-using ZpaPlugin;
+using Microsoft.Win32;
 
 namespace ZpaPluginTester
 {
@@ -23,8 +21,8 @@ namespace ZpaPluginTester
                 var dialog = new OpenFileDialog { Title = "Select a file..." };
                 if (dialog.ShowDialog() == true)
                 {
-                    var runner = new ZpaRunner(new NullPlsqlDevApi());
-                    runner.Analyze(File.ReadAllText(dialog.FileName));
+                    /*var runner = new ZpaRunner(new NullPlsqlDevApi());
+                    runner.Analyze(File.ReadAllText(dialog.FileName));*/
                 }
             }
             catch (Exception ex)

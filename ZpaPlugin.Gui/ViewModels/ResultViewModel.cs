@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -37,7 +36,7 @@ namespace ZpaPlugin.ViewModels
             ClearFilters = new RelayCommand(OnClearFilters);
         }
 
-        public IPlsqlDevApi PlsqlDevApi { get; set; } = new NullPlsqlDevApi();
+        //public IPlsqlDevApi PlsqlDevApi { get; set; } = new NullPlsqlDevApi();
 
         public RelayCommand ClearFilters { get; set; }
 
@@ -131,14 +130,14 @@ namespace ZpaPlugin.ViewModels
         {
             var view = (ListCollectionView)sender;
             var issue = view.CurrentItem as IssueView;
-            if (issue == null)
+            /*if (issue == null)
             {
                 PlsqlDevApi.ClearError();
             }
             else
             {
                 PlsqlDevApi.SetError(issue.StartLine, issue.StartColumn);
-            }
+            }*/
         }
 
         private bool ApplyFilters(object item)

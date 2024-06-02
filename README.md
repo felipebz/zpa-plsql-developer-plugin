@@ -1,6 +1,6 @@
 # Z PL/SQL Analyzer for PL/SQL Developer
 
-[![Build Status](https://dev.azure.com/felipebz/z-plsql-analyzer/_apis/build/status/zpa-plsql-developer-plugin?branchName=main)](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=main)
+[![Build](https://github.com/felipebz/zpa-plsql-developer-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/felipebz/zpa-plsql-developer-plugin/actions/workflows/build.yml)
 
 The [Z PL/SQL Analyzer](https://github.com/felipebz/zpa) (or simply ZPA) is a code analyzer for PL/SQL and Oracle SQL code. This repository contains the ZPA plugin for [Allround Automations PL/SQL Developer](https://www.allroundautomations.com/products/pl-sql-developer/).
 
@@ -13,11 +13,9 @@ The [Z PL/SQL Analyzer](https://github.com/felipebz/zpa) (or simply ZPA) is a co
 
 Note that this is work in progress and it has a lot of rough edges.
 
-* Open the [build pipeline](https://dev.azure.com/felipebz/z-plsql-analyzer/_build/latest?definitionId=11&branchName=main) and download the plugin from the "Artifacts" button. You must the download the artifact corresponding to your PL/SQL Developer installation.
+* Download the plugin from the [release](https://github.com/felipebz/zpa-plsql-developer-plugin/releases/tag/early-access).
 
-![Artifact download menu with the options 32-bit and 64-bit](docs/artifacts.png)
-
-* Extract the file to `<PLSQL Developer folder>\PlugIns`.
+* Extract the files to `<PLSQL Developer folder>\PlugIns`.
 
 * Run PL/SQL Developer and confirm that the plugin was recognized (menu Tools > Configure Plug-Ins).
 
